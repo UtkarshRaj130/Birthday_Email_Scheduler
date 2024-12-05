@@ -1,4 +1,3 @@
-```markdown
 # Birthday Email Scheduler
 
 This project automates the process of sending birthday emails to students using the Gmail API. The script checks for birthdays daily and sends personalized greetings. It also includes a special message encouraging students to participate in self-discovery exercises.
@@ -33,7 +32,7 @@ To run this project on your system, follow these steps:
 2. Run the following command to clone the repository:
    ```bash
    git clone https://github.com/<your-username>/birthday-email-scheduler.git
-   ```
+    ```
 3. Navigate to the project folder:
    ```bash
    cd birthday-email-scheduler
