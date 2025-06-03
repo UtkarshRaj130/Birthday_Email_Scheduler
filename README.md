@@ -1,4 +1,4 @@
-# 🎉 Automated Birthday Emailer using Gmail API (Linux + Python + Cron)
+# Automated Birthday Emailer using Gmail API (Linux + Python + Cron)
 
 This project sends **automated birthday emails** every morning at 8 AM to students listed in a CSV file.  
 It uses the **Gmail API**, **Python**, and **cron** (on Linux) to run daily with almost no system resource usage.
@@ -39,21 +39,23 @@ birthday-mailer/
 
 ## 🚀 Step-by-Step Setup Guide
 
-### 1. Clone the Repository
+### 1. Clone the Repository / Download the Repository from GitHub (https://github.com/UtkarshRaj130/Birthday_Email_Scheduler/archive/refs/heads/main.zip)
 
 ```bash
-git clone https://github.com/your-username/birthday-mailer.git
+git clone https://github.com/UtkarshRaj130/Birthday_Email_Scheduler
 cd birthday-mailer
 ```
-
-### 2. Set Up a Python Virtual Environment
+### 2. Place the Repository/folder at the required loaction/address in the system
+   Place the absolute address of this directory in your linux system to the variable ```bash BASE_DIR ``` at the top the .py script in the "CONFIGURATION" Section
+   
+### 3. Set Up a Python Virtual Environment
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install Required Libraries
+### 4. Install Required Libraries
 
 ```bash
 pip install -r requirements.txt
@@ -69,7 +71,7 @@ pandas
 
 ---
 
-## 📧 Setting Up Gmail API
+## 5. Setting Up Gmail API
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project (or use an existing one)
@@ -80,14 +82,20 @@ pandas
    - **Name**: Birthday Mailer
 6. Download the `credentials.json` file and place it inside the project directory.
 
+   NOTE: Don't forget to write your email id in the .py script at the variable ```bash SENDER_EMAIL``` which is placed in the "CONFIGURATION" section around the top of the script.
 ---
 
 ## 👤 First-Time Authentication
 
 Run the script once manually to authenticate your Google account:
 
+Activate the virtual environment "venv" in whic the requirements were installed:
 ```bash
-python birthday_mailer.py
+source venv/bin/activate
+```
+Then run the script as:
+```bash
+python3 birthday_mailer.py
 ```
 
 - A browser will open asking you to log in and allow permissions.
@@ -100,8 +108,13 @@ python birthday_mailer.py
 
 You can manually test it by running:
 
+Activate the virtual environment "venv" in whic the requirements were installed:
 ```bash
-python birthday_mailer.py
+source venv/bin/activate
+```
+Then run the script as:
+```bash
+python3 birthday_mailer.py
 ```
 
 If a birthday matches today’s date in `students.csv`, a mail will be sent.
