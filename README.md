@@ -1,120 +1,176 @@
-# Birthday Email Scheduler
+# 🎉 Automated Birthday Emailer using Gmail API (Linux + Python + Cron)
 
-This project automates the process of sending birthday emails to students using the Gmail API. The script checks for birthdays daily and sends personalized greetings. It also includes a special message encouraging students to participate in self-discovery exercises.
-
----
-
-## Table of Contents
-1. [Features](#features)
-2. [Setup Instructions](#setup-instructions)
-3. [How to Run](#how-to-run)
-4. [Folder Structure](#folder-structure)
-5. [CSV File Format](#csv-file-format)
-6. [Tech Stack](#tech-stack)
-7. [Limitations](#limitations)
-8. [License](#license)
+This project sends **automated birthday emails** every morning at 8 AM to students listed in a CSV file.  
+It uses the **Gmail API**, **Python**, and **cron** (on Linux) to run daily with almost no system resource usage.
 
 ---
 
-## Features
-- Automatically sends personalized birthday emails.
-- Integrates with the Gmail API for email delivery.
-- Uses a CSV file (`students.csv`) to store student data.
-- Includes a scheduler to run the script daily at a specified time.
+## ✨ Features
+
+- Automatically sends birthday wishes
+- Uses Gmail API (secured and authenticated)
+- Lightweight: scheduled with cron, no background process needed
+- Easy to set up and extend
 
 ---
 
-## Setup Instructions
-To run this project on your system, follow these steps:
+## 📁 Project Structure
 
-### Step 1: Clone the Repository
-1. Open your terminal or command prompt.
-2. Run the following command to clone the repository:
-   ```bash
-   git clone https://github.com/<your-username>/birthday-email-scheduler.git
-    ```
-3. Navigate to the project folder:
-   ```bash
-   cd birthday-email-scheduler
-   ```
-
-### Step 2: Install Dependencies
-1. Create a virtual environment (optional but recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate   # On Windows: venv\Scripts\activate
-   ```
-2. Install the required Python libraries:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Step 3: Setup Gmail API Credentials
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project or select an existing one.
-3. Enable the **Gmail API** for the project.
-4. Configure the **OAuth consent screen**.
-5. Create **OAuth 2.0 credentials** and download the `credentials.json` file.
-6. Place the `credentials.json` file in the root directory of the project.
-
----
-
-## How to Run
-### Run Once for Testing
-1. Open your terminal and navigate to the project folder.
-2. Run the script to manually check and send birthday emails:
-   ```bash
-   python main.py
-   ```
-
-### Schedule the Script
-The script includes a scheduler that runs daily at 8:00 AM (default). Follow these steps to start the scheduler:
-1. Open your terminal and navigate to the project folder.
-2. Run the script:
-   ```bash
-   python main.py
-   ```
-   Keep the terminal open to let the scheduler run.
-
----
-
-## Folder Structure
 ```
-birthday-email-scheduler/
-│
-├── credentials.json         # Google OAuth 2.0 credentials
-├── token.json               # Saved authentication token (auto-generated)
-├── students.csv             # Sample data file for student information
-├── main.py                  # Main Python script
-├── requirements.txt         # Python dependencies
-└── README.md                # Project documentation
+birthday-mailer/
+├── birthday_mailer.py         # Main script that sends birthday emails
+├── students.csv               # List of students with name, email, DOB
+├── credentials.json           # Gmail API credentials (downloaded from Google Cloud)
+├── token.json                 # Auto-generated on first authentication (stores access token)
+├── requirements.txt           # Required Python libraries
+└── log.txt                    # (Optional) Logs cron output for debugging
 ```
 
 ---
 
-## CSV File Format
-The script expects the `students.csv` file in the following format:
+## ⚙️ Prerequisites
 
-| Name       | Email               | Roll Number | DOB       |
-|------------|---------------------|-------------|-----------|
-| John Doe   | johndoe@gmail.com   | 12345       | 2000-12-06 |
-| Jane Smith | janesmith@gmail.com | 12346       | 1999-05-14 |
-
-- **DOB** must be in `YYYY-MM-DD` format.
-- The email column should contain valid email addresses.
+- A **Google account** (Gmail)
+- A Linux system (Ubuntu/Debian/Arch etc.)
+- Python 3.7 or higher
+- Basic internet connection
 
 ---
 
-## Tech Stack
-- **Python**: Core programming language.
-- **Google API**: Used for sending emails.
-- **Pandas**: Data manipulation.
-- **Schedule**: For task scheduling.
+## 🚀 Step-by-Step Setup Guide
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/birthday-mailer.git
+cd birthday-mailer
+```
+
+### 2. Set Up a Python Virtual Environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install Required Libraries
+
+```bash
+pip install -r requirements.txt
+```
+
+#### 📦 `requirements.txt` contents:
+```
+google-auth
+google-auth-oauthlib
+google-api-python-client
+pandas
+```
 
 ---
 
-## Limitations
-- The Gmail API limits the number of emails sent per day (500 emails for personal accounts).
-- The script must be running continuously for the scheduler to work.
+## 📧 Setting Up Gmail API
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project (or use an existing one)
+3. Enable the **Gmail API** from “APIs & Services”
+4. Go to **Credentials** and click **Create Credentials → OAuth Client ID**
+5. Choose:
+   - **Application type**: Desktop app
+   - **Name**: Birthday Mailer
+6. Download the `credentials.json` file and place it inside the project directory.
 
 ---
+
+## 👤 First-Time Authentication
+
+Run the script once manually to authenticate your Google account:
+
+```bash
+python birthday_mailer.py
+```
+
+- A browser will open asking you to log in and allow permissions.
+- A `token.json` file will be created to store your login token for future runs.
+- From now on, **no manual login needed** unless the token expires (usually years).
+
+---
+
+## 🧪 Test it Manually (Optional)
+
+You can manually test it by running:
+
+```bash
+python birthday_mailer.py
+```
+
+If a birthday matches today’s date in `students.csv`, a mail will be sent.
+
+---
+
+## 🕗 Set Up Cron to Run Every Day at 8 AM
+
+1. Open your crontab:
+
+```bash
+crontab -e
+```
+
+2. Add the following line to schedule it daily at 8 AM:
+
+```bash
+0 8 * * * /path/to/your/project/venv/bin/python /path/to/your/project/birthday_mailer.py >> /path/to/your/project/log.txt 2>&1
+```
+
+> Replace `/path/to/your/project/` with the **full absolute path** to the project folder on your system.
+
+---
+
+## 🧾 students.csv Format
+
+This file should have 3 columns:
+
+| Name         | Email               | DOB        |
+|--------------|---------------------|------------|
+| Alice Smith  | alice@example.com   | 2002-06-05 |
+| Bob Johnson  | bob@example.com     | 2003-08-21 |
+
+> ✅ **DOB format must be `YYYY-MM-DD`**
+
+---
+
+## 🛠 Notes
+
+- `token.json` is automatically refreshed silently once created.
+- If you ever change Gmail accounts or scopes, delete `token.json` and run the script again.
+- The Gmail account must allow access to **less secure apps** or use **OAuth 2.0** as configured.
+
+---
+
+## 📜 License
+
+MIT License
+
+---
+
+## 👨‍🏫 Project By
+
+- Utkarsh Raj  
+- Purpose: Automated self-awareness initiative via birthday wishes
+
+---
+
+## 🙋 FAQ
+
+**Q: Will this run every day?**  
+Yes, once cron is set, it silently runs at 8 AM every day.
+
+**Q: Will I be asked to log in every time?**  
+No, only the first time. After that, `token.json` handles authentication.
+
+**Q: Can I use this on Windows?**  
+Not directly with cron. But you can use Task Scheduler instead.
+
+---
+
+Happy Automating! 🥳
