@@ -135,9 +135,29 @@ crontab -e
 0 8 * * * /path/to/your/project/venv/bin/python /path/to/your/project/birthday_mailer.py >> /path/to/your/project/log.txt 2>&1
 ```
 
-> Replace `/path/to/your/project/` with the **full absolute path** to the project folder on your system.
+> Replace `/path/to/your/project` with the **full absolute path** to the project folder on your system ( same as the value assigned to ```bash BASE_DIR``` in the .py script in the previous steps, you can copy and paste the same here.
+> NOTE: If you don't want to keep a log remove the part of the instruction just after .py ends from the bash command mentioned just before (in point 2).
 
 ---
+
+### ⏰ Set a Custom Time in Cron (Optional)
+
+To run the script at a **custom time**, modify the cron time expression:
+
+```bash
+MIN HOUR * * * /path/to/venv/bin/python /path/to/project/birthday_mailer.py >> /path/to/project/log.txt 2>&1
+```
+
+**Examples:**
+
+* `30 7 * * *` → Run daily at **7:30 AM**
+* `0 21 * * *` → Run daily at **9:00 PM**
+* `15 14 * * *` → Run daily at **2:15 PM**
+
+> Use [crontab.guru](https://crontab.guru) to easily build and verify your desired schedule.
+
+---
+
 
 ## 🧾 students.csv Format
 
